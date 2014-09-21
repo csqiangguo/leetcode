@@ -1,37 +1,29 @@
 /*
-Problem: Longest Substring Without Repeating Characters 
-Method: dynamic programming
+Problem: Longest Substring Without Repeating Characters
+Method: window/dynamic program 
 Author: 'gq' 
 */
 #include<iostream>
 using namespace std;
-
-struct ListNode {
-    int val;
-    ListNode *next;
-    ListNode(int x) : val(x), next(NULL) {}
-};
 class Solution {
 public:
-    ListNode *swapPairs(ListNode *head) {
-        if(NULL==head||NULL==head->next)
-            return head;
-        ListNode *headNode=new ListNode(0);
-        headNode->next=head;
-        ListNode *pPre=headNode;
-        ListNode *pre=head,*p=pre->next;
-        while(pre&&p)
+    int lengthOfLongestSubstring(string s) {
+        if(s.size()==0)
+            return 0;
+        int max=1;
+        map<char,int> charMap;
+        charMap[s[0]]=0;
+        int lastIndex=-1;
+        for(int i=1;i<s.size();i++)
         {
-            ListNode *nex=p->next;
-            pPre->next=p;
-            p->next=pre;
-            pre->next=nex;
-            pPre=pre;
-            pre=nex;
-            if(!pre)
-                break;
-            p=nex->next;
+            if(charMap.find(s[i])!=charMap.end()&&lastIndex<charMap[s[i]])
+            {
+                lastIndex=charMap[s[i]];
+            }
+            charMap[s[i]]=i;
+            if(max<i-lastIndex)
+                max=i-lastIndex;
         }
-        return headNode->next;
+        return max;
     }
 };
